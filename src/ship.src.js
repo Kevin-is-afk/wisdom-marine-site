@@ -63,11 +63,12 @@ function loadModel(onLoad, onError) {
 }
 
 function init() {
-  const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+  const phone = window.matchMedia("(max-width: 767px)").matches;
+  const renderer = new WebGLRenderer({ canvas, antialias: !phone, alpha: true, powerPreference: "high-performance" });
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !phone;               // the shadow pass doubles the work: skipped on phones
   renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.setClearColor(0x000000, 0);
 
@@ -77,7 +78,7 @@ function init() {
 
   scene.add(new HemisphereLight(0xcfe4f1, 0x1a3d4a, 1.15));
   const key = new DirectionalLight(0xfff0dc, 2.7);
-  key.position.set(7, 12, 8); key.castShadow = true;
+  key.position.set(7, 12, 8); key.castShadow = !phone;
   key.shadow.mapSize.set(2048, 2048);
   Object.assign(key.shadow.camera, { left: -15, right: 15, top: 12, bottom: -12, near: 1, far: 40 });
   key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03;
@@ -113,7 +114,7 @@ function init() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h || (w === W && h === H)) return;
     W = w; H = h;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, phone ? 1.25 : 1.75));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     // keep the ship clear of the text: right of the list on desktop, middle band on phones

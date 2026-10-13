@@ -59,10 +59,15 @@
     items: $$('[data-reel-list] li'), layers: $$('.reel__layer'),
     details: $$('[data-detail]'), chips: $$('[data-chip]')
   };
+  var heroVideo = $('[data-video-slot="docking"]');
+  if (heroVideo && !reduce) {
+    var small = window.matchMedia('(max-width: 767px)').matches;
+    heroVideo.src = (small && heroVideo.getAttribute('data-src-sm')) || heroVideo.getAttribute('data-src');
+  }
   var N = R.items.length;                       // 9 services
   var WHEEL_START = 0.36, WHEEL_END = 0.94;     // progress window where the wheel turns
   var BOUNDS = [2.5, 4.5, 6.5];                 // where the discipline (background) changes
-  var geo = null, item = 72, group = -1, chip = -1, wasLive = false;
+  var geo = null, item = 72, group = -1, chip = -1, wasLive = false, wasCovered = false;
   var layerState = [false, false, false, false];
   var shipOn = !!(window.WMShip && window.WMShip.ready);
   window.addEventListener('wm-ship-ready', function () { shipOn = true; if (typeof acts !== 'undefined') acts.forEach(function (a) { a.last = -1; }); });
@@ -107,7 +112,7 @@
       el.style.transform = 'translate3d(0,' + (-14 * f).toFixed(1) + 'px,0)';
       el.style.visibility = f >= 0.99 ? 'hidden' : 'visible';
     });
-    R.stage.style.setProperty('--k', smooth((e - 0.35) / 0.45).toFixed(3));
+    R.title.style.setProperty('--k', smooth((e - 0.35) / 0.45).toFixed(3));
 
     /* 3. headline hands over to the wheel */
     var out = smooth((p - 0.27) / 0.07);
@@ -127,8 +132,12 @@
       R.items[i].style.opacity = clamp(1 - 0.5 * d, 0.14, 1).toFixed(3);
     }
 
+    var covered = e > 0.985;
+    if (covered !== wasCovered) { R.stage.classList.toggle('is-covered', covered); wasCovered = covered; }
+
     /* the 3D ship takes over from the photos once the wheel starts */
     R.media.style.opacity = shipOn ? (1 - wIn).toFixed(3) : '1';
+    R.media.style.visibility = shipOn && wIn > 0.995 ? 'hidden' : 'visible';
     R.scrim.style.opacity = (shipOn ? e * (1 - wIn) : e).toFixed(3);
     if (shipOn) window.WMShip.update({ pos: pos, vis: wIn });
 
@@ -182,6 +191,17 @@
       var y = dy + (p - 0.5) * (dy > 0 ? -36 : 36);
       c.style.transform = 'translate3d(' + x.toFixed(1) + 'px,calc(-50% + ' + y.toFixed(1) + 'px),0) rotate(' + (rot + (p - 0.5) * 3).toFixed(2) + 'deg)';
     });
+  }
+
+  /* ------------------------------------------------ 3D ship, loaded when idle -- */
+  if (!reduce) {
+    var loadShip = function () {
+      var tag = document.createElement('script');
+      tag.src = 'js/ship.js';
+      document.body.appendChild(tag);
+    };
+    var whenIdle = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 800); })(loadShip, { timeout: 3000 }); };
+    if (document.readyState === 'complete') whenIdle(); else window.addEventListener('load', whenIdle);
   }
 
   /* -------------------------------------------------- one eased frame loop -- */

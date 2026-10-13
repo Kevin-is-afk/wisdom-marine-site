@@ -52,7 +52,7 @@
   <div class="topnav">
     <div class="container topnav__inner">
       <a class="brand" href="#top" aria-label="Wisdom Marine, back to top">
-        <img src="assets/img/logo.png" width="32" height="32" alt="">
+        <img decoding="async" src="assets/img/logo.png" width="32" height="32" alt="">
         <span>Wisdom Marine</span>
       </a>
 
@@ -89,31 +89,8 @@
     <div class="reel__stage" data-sc-stage>
 
       <div class="reel__sky" aria-hidden="true">
-        <svg class="cloud cloud--far" data-sc-parallax="1.6" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e3ebf4"/></linearGradient>
-            <symbol id="cld" viewBox="0 0 400 140" overflow="visible">
-              <g fill="url(#cg)">
-                <circle cx="92" cy="94" r="38"/><circle cx="150" cy="72" r="52"/><circle cx="230" cy="58" r="58"/>
-                <circle cx="306" cy="80" r="46"/><circle cx="352" cy="100" r="34"/>
-                <rect x="64" y="94" width="318" height="40" rx="20"/>
-              </g>
-            </symbol>
-            <filter id="soft-a" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
-            <filter id="soft-b" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="3.5"/></filter>
-          </defs>
-          <g filter="url(#soft-a)" opacity=".55">
-            <use href="#cld" x="-30" y="150" width="380" height="133"/><use href="#cld" x="330" y="50" width="300" height="105"/>
-            <use href="#cld" x="780" y="150" width="420" height="147"/><use href="#cld" x="1200" y="60" width="320" height="112"/>
-            <use href="#cld" x="1400" y="190" width="280" height="98"/>
-          </g>
-        </svg>
-        <svg class="cloud cloud--mid" data-sc-parallax="0.8" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMid slice">
-          <g filter="url(#soft-b)" opacity=".86">
-            <use href="#cld" x="-90" y="170" width="520" height="182"/><use href="#cld" x="560" y="90" width="380" height="133"/>
-            <use href="#cld" x="1180" y="190" width="520" height="182"/>
-          </g>
-        </svg>
+        <img class="cloud cloud--far" data-sc-parallax="1.6" src="assets/img/cloud-far.webp" width="2400" height="540" alt="" decoding="async">
+        <img class="cloud cloud--mid" data-sc-parallax="0.8" src="assets/img/cloud-mid.webp" width="2400" height="540" alt="" decoding="async">
       </div>
 
       <div class="container reel__top">
@@ -152,26 +129,26 @@
       <div class="reel__panel" data-reel-panel>
         <div class="reel__media" data-reel-media>
           <!--
-            VIDEO SLOTS. Layer 0 (docking) plays assets/video/hero-reel.mp4, a
+            VIDEO SLOTS. Layer 0 (docking) plays assets/video/hero-reel.mp4 (hero-reel-sm.mp4 on phones, picked in js/site.js), a
             text-free 12 s seamless loop made in /hero-reel-video. Layers 1 to 3
             are empty slots (they show their photo): give their <video> a src to add
             a clip. The script plays a clip while its layer is visible and
             pauses it otherwise.
           -->
           <div class="reel__layer" data-layer="0">
-            <img src="assets/img/galene.webp" width="2000" height="916" alt="">
-            <video class="slot-video" src="assets/video/hero-reel.mp4" poster="assets/img/galene.webp" muted playsinline loop preload="auto" data-video-slot="docking"></video>
+            <img decoding="async" src="assets/img/galene.webp" width="2000" height="916" alt="">
+            <video class="slot-video" data-src="assets/video/hero-reel.mp4" data-src-sm="assets/video/hero-reel-sm.mp4" poster="assets/img/galene.webp" muted playsinline loop preload="auto" data-video-slot="docking"></video>
           </div>
           <div class="reel__layer" data-layer="1">
-            <img src="assets/img/pipework.webp" width="1400" height="1050" alt="" loading="lazy">
+            <img decoding="async" src="assets/img/pipework.webp" width="1400" height="1050" alt="" loading="lazy">
             <video class="slot-video" muted playsinline loop preload="none" data-video-slot="steel-piping"></video>
           </div>
           <div class="reel__layer" data-layer="2">
-            <img src="assets/img/propeller.webp" width="642" height="1400" alt="" loading="lazy" style="object-position:50% 40%">
+            <img decoding="async" src="assets/img/propeller.webp" width="642" height="1400" alt="" loading="lazy" style="object-position:50% 40%">
             <video class="slot-video" muted playsinline loop preload="none" data-video-slot="mechanical"></video>
           </div>
           <div class="reel__layer" data-layer="3">
-            <img src="assets/img/pressure-vessel.webp" width="960" height="1280" alt="" loading="lazy" style="object-position:50% 30%">
+            <img decoding="async" src="assets/img/pressure-vessel.webp" width="960" height="1280" alt="" loading="lazy" style="object-position:50% 30%">
             <video class="slot-video" muted playsinline loop preload="none" data-video-slot="surface-treatment"></video>
           </div>
         </div>
@@ -230,35 +207,35 @@
         </div>
 
         <figure class="work work--wide">
-          <img src="assets/img/galene.webp" width="2000" height="916" alt="Hull of the vessel Galene on the dock" loading="lazy">
+          <img decoding="async" src="assets/img/galene.webp" width="2000" height="916" alt="Hull of the vessel Galene on the dock" loading="lazy">
           <figcaption><strong>Galene, hull on the dock</strong><span class="badge-type">Dry docking</span></figcaption>
         </figure>
         <figure class="work">
-          <img src="assets/img/pipe-bends.webp" width="960" height="1280" alt="Welded steel pipe bends stacked in a hull compartment" loading="lazy">
+          <img decoding="async" src="assets/img/pipe-bends.webp" width="960" height="1280" alt="Welded steel pipe bends stacked in a hull compartment" loading="lazy">
           <figcaption><strong>Welded pipe bends</strong><span class="badge-type">Steel and piping</span></figcaption>
         </figure>
         <figure class="work work--tall">
-          <img src="assets/img/propeller.webp" width="642" height="1400" alt="A bronze propeller on scaffold staging" loading="lazy">
+          <img decoding="async" src="assets/img/propeller.webp" width="642" height="1400" alt="A bronze propeller on scaffold staging" loading="lazy">
           <figcaption><strong>Propeller on staging</strong><span class="badge-type">Mechanical</span></figcaption>
         </figure>
         <figure class="work work--tall">
-          <img src="assets/img/reem7.webp" width="826" height="1500" alt="The bow of the vessel Reem 7 on keel blocks" loading="lazy">
+          <img decoding="async" src="assets/img/reem7.webp" width="826" height="1500" alt="The bow of the vessel Reem 7 on keel blocks" loading="lazy">
           <figcaption><strong>Reem 7, bow on blocks</strong><span class="badge-type">Dry docking</span></figcaption>
         </figure>
         <figure class="work work--tall">
-          <img src="assets/img/tanker-lines.webp" width="642" height="1400" alt="Long runs of deck pipelines on a tanker" loading="lazy">
+          <img decoding="async" src="assets/img/tanker-lines.webp" width="642" height="1400" alt="Long runs of deck pipelines on a tanker" loading="lazy">
           <figcaption><strong>Tanker deck lines</strong><span class="badge-type">Steel and piping</span></figcaption>
         </figure>
         <figure class="work">
-          <img src="assets/img/strainer.webp" width="960" height="1280" alt="A fabricated mesh strainer basket in the workshop" loading="lazy">
+          <img decoding="async" src="assets/img/strainer.webp" width="960" height="1280" alt="A fabricated mesh strainer basket in the workshop" loading="lazy">
           <figcaption><strong>Fabricated strainer</strong><span class="badge-type">Machine shop</span></figcaption>
         </figure>
         <figure class="work">
-          <img src="assets/img/pressure-vessel.webp" width="960" height="1280" alt="A pressure vessel coated in red primer" loading="lazy">
+          <img decoding="async" src="assets/img/pressure-vessel.webp" width="960" height="1280" alt="A pressure vessel coated in red primer" loading="lazy">
           <figcaption><strong>Pressure vessel, primed</strong><span class="badge-type">Surface treatment</span></figcaption>
         </figure>
         <figure class="work work--wide">
-          <img src="assets/img/sea-princess.webp" width="1600" height="733" alt="Hull of the vessel Sea Princess on the dock" loading="lazy">
+          <img decoding="async" src="assets/img/sea-princess.webp" width="1600" height="733" alt="Hull of the vessel Sea Princess on the dock" loading="lazy">
           <figcaption><strong>Sea Princess, hull on the dock</strong><span class="badge-type">Dry docking</span></figcaption>
         </figure>
 
@@ -283,7 +260,7 @@
           <p class="mission__by">Wisdom Marine Equipment Repairing LLC</p>
         </div>
         <figure class="mission__photo" data-sc-reveal="up" data-sc-reveal-at="0.08 0.5">
-          <img src="assets/img/worker.webp" width="596" height="1300" alt="Yard crew rigging heavy equipment for repair" loading="lazy">
+          <img decoding="async" src="assets/img/worker.webp" width="596" height="1300" alt="Yard crew rigging heavy equipment for repair" loading="lazy">
         </figure>
       </article>
     </div>
@@ -298,37 +275,37 @@
 
       <div class="drift__track" data-drift-track>
         <article class="perk" data-drift="-5" data-drift-y="-125">
-          <img src="assets/img/worker.webp" width="596" height="1300" alt="" loading="lazy">
+          <img decoding="async" src="assets/img/worker.webp" width="596" height="1300" alt="" loading="lazy">
           <span class="perk__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></span>
           <h3 class="t-h5">Skilled, certified team</h3>
           <p>Repairs carried out by technicians certified for the work.</p>
         </article>
         <article class="perk" data-drift="4" data-drift-y="135">
-          <img src="assets/img/scaffold-hull.webp" width="522" height="1160" alt="" loading="lazy">
+          <img decoding="async" src="assets/img/scaffold-hull.webp" width="522" height="1160" alt="" loading="lazy">
           <span class="perk__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
           <h3 class="t-h5">Health, safety and environment</h3>
           <p>A written HSE policy sits behind every job we take on.</p>
         </article>
         <article class="perk" data-drift="-3" data-drift-y="-105">
-          <img src="assets/img/tanker-lines.webp" width="642" height="1400" alt="" loading="lazy">
+          <img decoding="async" src="assets/img/tanker-lines.webp" width="642" height="1400" alt="" loading="lazy">
           <span class="perk__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
           <h3 class="t-h5">Fast turnaround</h3>
           <p>Work is planned to keep vessel downtime to a minimum.</p>
         </article>
         <article class="perk" data-drift="5" data-drift-y="145">
-          <img src="assets/img/pump-room.webp" width="532" height="1152" alt="" loading="lazy">
+          <img decoding="async" src="assets/img/pump-room.webp" width="532" height="1152" alt="" loading="lazy">
           <span class="perk__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
           <h3 class="t-h5">Trusted brand partners</h3>
           <p>Partnerships with reputable marine equipment brands.</p>
         </article>
         <article class="perk" data-drift="-4" data-drift-y="-135">
-          <img src="assets/img/flange.webp" width="520" height="1100" alt="" loading="lazy">
+          <img decoding="async" src="assets/img/flange.webp" width="520" height="1100" alt="" loading="lazy">
           <span class="perk__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
           <h3 class="t-h5">On site and in the workshop</h3>
           <p>Repairs on the vessel or at our yard, whichever the job needs.</p>
         </article>
         <article class="perk" data-drift="3" data-drift-y="115">
-          <img src="assets/img/reducer.webp" width="1280" height="720" alt="" loading="lazy">
+          <img decoding="async" src="assets/img/reducer.webp" width="1280" height="720" alt="" loading="lazy">
           <span class="perk__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg></span>
           <h3 class="t-h5">Our commitment</h3>
           <p>Quality, innovation, integrity and exceptional performance, building partnerships that add value and results beyond expectations.</p>
@@ -425,7 +402,7 @@
     <div class="container">
       <div class="map" data-sc-in>
         <div class="map__view" role="img" aria-label="Fixed map centred on Wisdom Marine, Shed No. 385, Dubai Maritime City">
-          <img class="map__img" src="assets/img/map-yard.webp" width="1408" height="640" alt="" style="--mx:695.6px;--my:365.8px">
+          <img decoding="async" class="map__img" src="assets/img/map-yard.webp" width="1408" height="640" alt="" style="--mx:695.6px;--my:365.8px">
           <svg class="map__pin" viewBox="0 0 40 52" aria-hidden="true"><path d="M20 51C20 51 38 32 38 19a18 18 0 0 0-36 0c0 13 18 32 18 32Z" fill="#0a0a0a"/><circle cx="20" cy="19" r="7" fill="#00d4a4"/></svg>
         </div>
         <a class="map__link" href="https://www.openstreetmap.org/?mlat=25.267406&amp;mlon=55.265170#map=16/25.267406/55.265170">Open larger map</a>
@@ -440,7 +417,7 @@
   <div class="container footer__grid">
     <div class="footer__brand">
       <a class="brand" href="#top" aria-label="Wisdom Marine, back to top">
-        <img src="assets/img/logo.png" width="32" height="32" alt="">
+        <img decoding="async" src="assets/img/logo.png" width="32" height="32" alt="">
         <span>Wisdom Marine</span>
       </a>
       <p>Wisdom Marine Equipment Repairing L.L.C<br>Shed No. 385, Dubai Maritime City<br>Dubai, United Arab Emirates</p>
@@ -483,7 +460,6 @@
 </footer>
 
 <script src="scrollcraft/scrollcraft.js"></script>
-<script src="js/ship.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>
