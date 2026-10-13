@@ -28,7 +28,7 @@ const VIEWS = [
   /* 3 steel and piping   */ { t: [0.6, 0.7, 0], az: 100, el: 52, d: 8.8, tx: -1.8, tz: 0 },
   /* 4 hydraulic tube     */ { t: [5.0, 1.2, 0.5], az: 58, el: 20, d: 8.2, tx: 0.6, tz: -2.0 },
   /* 5 mechanical         */ { t: [-4.2, 1.5, 0], az: 128, el: 22, d: 11, tx: 1.0, tz: 2.2 },
-  /* 6 machine shop       */ { t: [-5.6, -0.75, 0.1], az: 142, el: 11, d: 8.6, tx: 0, tz: -1.6 },
+  /* 6 machine shop       */ { t: [-5.9, -1.0, 0], az: 161, el: 4, d: 5.2, tx: 0, tz: -1.6 },
   /* 7 blasting           */ { t: [0.4, -0.1, 1.2], az: 84, el: 15, d: 12.5, tx: -0.8, tz: 1.8 },
   /* 8 spray painting     */ { t: [5.3, -0.1, 0.4], az: 22, el: 12, d: 9.4, tx: 0.8, tz: -1.2 },
 ];
@@ -160,7 +160,7 @@ function init() {
       const w = sm(1 - Math.abs(pos - k) * 1.5);
       (targets[name] || []).forEach((e) => {
         if (e.overlay) { e.mesh.visible = w > 0.01; e.mat.opacity = 0.62 * w; }
-        else { e.mat.emissive.set("#00d4a4"); e.mat.emissiveIntensity = 0.55 * w; if (w < 0.01) { e.mat.emissive.copy(e.emissive); e.mat.emissiveIntensity = e.ei; } }
+        else { e.mat.emissive.set("#00d4a4"); e.mat.emissiveIntensity = (name === "hl_prop" ? 0.32 : 0.55) * w; if (w < 0.01) { e.mat.emissive.copy(e.emissive); e.mat.emissiveIntensity = e.ei; } }
       });
     });
 

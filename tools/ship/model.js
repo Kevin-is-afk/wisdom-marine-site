@@ -35,7 +35,7 @@ const M = {
   concrete: mat("#8d999b", { roughness: 0.95 }),
   concreteDark: mat("#6f7b7d", { roughness: 0.95 }),
   block: mat("#b9a47a", { roughness: 0.9 }),
-  water: mat("#1d6f86", { roughness: 0.25, metalness: 0.3, transparent: true, opacity: 0.92 }),
+  water: mat("#1d6f86", { roughness: 0.25, metalness: 0.3, transparent: true, opacity: 0.92, depthWrite: false }),
   barge: mat("#c2582d", { roughness: 0.7 }),
   bargeDeck: mat("#4a5256", { roughness: 0.9 }),
   boatWhite: mat("#e9eef0"),
@@ -209,17 +209,36 @@ function buildCrane() {
 
 function buildProp() {
   const g = new THREE.Group(); g.name = "hl_prop";
-  const px = -5.78, py = -0.62;
-  g.add(cyl(0.07, 0.5, M.steel, px + 0.3, py, 0, [0, 0, Math.PI / 2], 12));         // shaft
-  g.add(cyl(0.17, 0.4, M.bronze, px, py, 0, [0, 0, Math.PI / 2], 18));             // hub
-  for (let i = 0; i < 4; i++) {
-    const bl = new THREE.Group(); bl.rotation.x = (i * Math.PI) / 2;
-    const blade = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.8, 0.36), M.bronze);
-    blade.position.y = 0.5; blade.rotation.y = 0.55; bl.add(blade);
-    bl.position.set(px, py, 0); g.add(bl);
+  const px = -5.8, py = -0.98;
+  // built with its axis along z, then turned so the axis runs along the ship (x)
+  const prop = new THREE.Group(); prop.position.set(px, py, 0); prop.rotation.y = Math.PI / 2; prop.scale.setScalar(0.82);
+  const hub = cyl(0.17, 0.42, M.bronze, 0, 0, 0, [Math.PI / 2, 0, 0], 28); prop.add(hub);
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(0.17, 0.3, 28), M.bronze);
+  cap.rotation.x = -Math.PI / 2; cap.position.z = -0.35; prop.add(cap);                    // nose cone points aft
+  const shaft = cyl(0.075, 0.9, M.steel, 0, 0, 0.62, [Math.PI / 2, 0, 0], 16); prop.add(shaft);
+  // one blade: a flat leaf, narrow at the root and full at the tip, pitched like a real screw
+  const leaf = new THREE.Shape();
+  leaf.moveTo(0.12, -0.05);
+  leaf.bezierCurveTo(0.3, -0.2, 0.62, -0.3, 0.86, -0.12);
+  leaf.bezierCurveTo(0.96, -0.04, 0.96, 0.1, 0.84, 0.2);
+  leaf.bezierCurveTo(0.6, 0.3, 0.3, 0.2, 0.12, 0.07);
+  leaf.lineTo(0.12, -0.05);
+  const bladeGeo = new THREE.ExtrudeGeometry(leaf, { depth: 0.035, bevelEnabled: false }); bladeGeo.translate(0, 0, -0.0175);
+  const N = 4;
+  for (let i = 0; i < N; i++) {
+    const arm = new THREE.Group(); arm.rotation.z = Math.PI / 4 + (i * 2 * Math.PI) / N;
+    const blade = new THREE.Mesh(bladeGeo, M.bronze); blade.rotation.x = 0.62; arm.add(blade);   // pitch
+    prop.add(arm);
   }
-  g.add(box(0.08, 1.25, 0.5, M.steel, px - 0.6, py + 0.05, 0));                      // rudder
-  g.add(box(0.5, 0.2, 0.3, M.red, px + 0.45, py + 0.28, 0));                          // skeg stub
+  g.add(prop);
+  g.add(box(0.14, 0.4, 0.14, M.steel, px + 0.55, py + 0.22, 0));                         // strut holding the shaft to the hull
+  return g;
+}
+
+function buildRudder() {
+  const g = new THREE.Group(); g.name = "rudder";
+  g.add(box(0.55, 1.3, 0.1, M.steel, -6.55, -0.62, 0));
+  
   return g;
 }
 
@@ -240,11 +259,13 @@ function buildDock() {
   g.add(box(26, 0.4, 7.6, M.concrete, 0, floorY - 0.2, 0, "dock_floor"));
   for (let x = -12; x <= 12; x += 2) g.add(box(0.04, 0.02, 7.6, M.concreteDark, x, floorY + 0.01, 0));
   g.add(box(26, 1.6, 0.7, M.concreteDark, 0, floorY + 0.4 - 0.2, -3.95));                // far wall
-  g.add(box(26, 0.35, 0.5, M.concreteDark, 0, floorY + 0.17, 3.95));                      // quay edge
-  [-9, -3, 3, 9].forEach((x) => g.add(cyl(0.13, 0.35, M.black, x, floorY + 0.35, 3.7)));  // bollards
-  // water beyond the quay
-  const w = new THREE.Mesh(new THREE.PlaneGeometry(40, 14), M.water); w.rotation.x = -Math.PI / 2; w.position.set(0, floorY + 0.2, 11); w.name = "water"; g.add(w);
-  g.add(box(40, 1.4, 0.5, M.concreteDark, 0, floorY - 0.5, 4.2));
+  // one solid quay wall between the dock floor and the water: its top (-1.15) is well above the
+  // water surface (-1.5) so the two never share a plane and cannot flicker against each other
+  g.add(box(40, 1.4, 0.9, M.concreteDark, 0, -1.85, 4.15));
+  g.add(box(40, 0.1, 0.5, M.concrete, 0, -1.2, 4.0));                                     // coping stone along the edge
+  [-9, -3, 3, 9].forEach((x) => g.add(cyl(0.13, 0.35, M.black, x, -1.0, 3.8)));            // bollards on the quay
+  const w = new THREE.Mesh(new THREE.PlaneGeometry(40, 13), M.water);
+  w.rotation.x = -Math.PI / 2; w.position.set(0, -1.5, 11.0); w.name = "water"; w.renderOrder = -1; g.add(w);
   return g;
 }
 
@@ -273,7 +294,7 @@ function buildBarge() {
 /* ----------------------------------------------------------------- scene -- */
 export function buildShip() {
   const root = new THREE.Group(); root.name = "wisdom_marine_ship";
-  root.add(buildHull(), buildOverlays(), buildEngine(), buildPipes(), buildCrane(), buildProp(), buildDock(), buildBarge());
+  root.add(buildHull(), buildOverlays(), buildEngine(), buildPipes(), buildCrane(), buildProp(), buildRudder(), buildDock(), buildBarge());
   // a few deck fittings that are not highlighted
   const fit = new THREE.Group(); fit.name = "fittings";
   [-1, 1].forEach((s) => {
