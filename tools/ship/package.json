@@ -1,0 +1,15 @@
+{
+  "name": "wisdom-marine-ship-tools",
+  "private": true,
+  "type": "module",
+  "description": "Build tools for the 3D ship in the services wheel. Not needed to deploy the site.",
+  "scripts": {
+    "model": "node make-model.mjs",
+    "bundle": "node bundle.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "playwright-core": "^1.50.0",
+    "three": "^0.170.0"
+  }
+}

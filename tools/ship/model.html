@@ -1,0 +1,16 @@
+<!doctype html><meta charset="utf-8"><title>ship model export</title>
+<script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }</script>
+<script type="module">
+  import * as THREE from "three";
+  import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+  import { buildShip } from "/model.js";
+  window.exportShip = () => new Promise((resolve, reject) => {
+    const ship = buildShip();
+    new GLTFExporter().parse(ship, (buf) => {
+      const bytes = new Uint8Array(buf); let s = ""; const CH = 0x8000;
+      for (let i = 0; i < bytes.length; i += CH) s += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+      resolve(btoa(s));
+    }, reject, { binary: true });
+  });
+  window.__ready = true;
+</script>

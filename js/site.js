@@ -64,6 +64,8 @@
   var BOUNDS = [2.5, 4.5, 6.5];                 // where the discipline (background) changes
   var geo = null, item = 72, group = -1, chip = -1, wasLive = false;
   var layerState = [false, false, false, false];
+  var shipOn = !!(window.WMShip && window.WMShip.ready);
+  window.addEventListener('wm-ship-ready', function () { shipOn = true; if (typeof acts !== 'undefined') acts.forEach(function (a) { a.last = -1; }); });
 
   function measureReel() {
     var W = R.stage.clientWidth, H = R.stage.clientHeight;
@@ -97,7 +99,6 @@
     var s = lerp(s0, 1, e);
     var cx = lerp(t.x + t.w / 2, W / 2, e), cy = lerp(t.y + t.h / 2, H / 2, e);
     R.media.style.transform = 'translate3d(' + (cx - W / 2).toFixed(1) + 'px,' + (cy - H / 2).toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')';
-    R.scrim.style.opacity = e.toFixed(3);
 
     /* 2. supporting copy leaves while the headline turns white */
     var f = clamp(e * 2.4, 0, 1);
@@ -126,10 +127,15 @@
       R.items[i].style.opacity = clamp(1 - 0.5 * d, 0.14, 1).toFixed(3);
     }
 
+    /* the 3D ship takes over from the photos once the wheel starts */
+    R.media.style.opacity = shipOn ? (1 - wIn).toFixed(3) : '1';
+    R.scrim.style.opacity = (shipOn ? e * (1 - wIn) : e).toFixed(3);
+    if (shipOn) window.WMShip.update({ pos: pos, vis: wIn });
+
     /* 5. background per discipline: later layers fade in over earlier ones */
     for (var g = 1; g < 4; g++) {
       var o = smooth((pos - (BOUNDS[g - 1] - 0.35)) / 0.7);
-      R.layers[g].style.opacity = o.toFixed(3);
+      R.layers[g].style.opacity = shipOn ? '0' : o.toFixed(3);
       setVideo(g, o > 0.5 && (g === 3 || smooth((pos - (BOUNDS[g] - 0.35)) / 0.7) < 0.5) && wIn > 0.3);
     }
     setVideo(0, pos < BOUNDS[0] || wIn < 0.3);
