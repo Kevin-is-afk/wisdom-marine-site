@@ -41,7 +41,26 @@ function webgl() {
   try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; }
 }
 
-if (canvas && !reduce && webgl() && location.protocol !== "file:") init();
+if (canvas && !reduce && webgl()) init();
+
+/* Over http(s) the model is fetched as a normal file. Browsers refuse that from a
+   page opened straight off the disk (file://), so there the same model is read from
+   js/ship-model.js, a copy embedded as base64 (written by tools/ship/make-model.mjs). */
+function loadModel(onLoad, onError) {
+  const loader = new GLTFLoader();
+  if (location.protocol !== "file:") { loader.load("assets/models/ship.glb", onLoad, undefined, onError); return; }
+  const tag = document.createElement("script");
+  tag.src = "js/ship-model.js";
+  tag.onload = () => {
+    try {
+      const bin = atob(window.WM_SHIP_GLB), bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      loader.parse(bytes.buffer, "", onLoad, onError);
+    } catch (e) { onError(e); }
+  };
+  tag.onerror = onError;
+  document.head.appendChild(tag);
+}
 
 function init() {
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
@@ -69,7 +88,7 @@ function init() {
   const pivot = new Group(); scene.add(pivot);     // tilting the model happens here
   const targets = {};                               // highlight name -> [{ mat, base }]
 
-  new GLTFLoader().load("assets/models/ship.glb", (gltf) => {
+  loadModel((gltf) => {
     const model = gltf.scene;
     model.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     pivot.add(model);
@@ -87,7 +106,7 @@ function init() {
     });
     WMShip.ready = true;
     window.dispatchEvent(new CustomEvent("wm-ship-ready"));
-  }, undefined, () => { /* model failed: the page keeps its photos */ });
+  }, () => { /* model failed: the page keeps its photos */ });
 
   let W = 0, H = 0;
   function resize() {

@@ -18,7 +18,7 @@ Open `index.html`, or serve the folder: `npx serve .`
 Import this repo in Vercel. Framework preset: **Other**. Leave build command and output directory empty (the repo root is the site).
 
 ## 3D ship (services wheel)
-`assets/models/ship.glb` is loaded by `js/ship.js`. As the wheel turns, the camera flies to the part of the ship each service relates to, tilts the model between stops, and glows that part. If WebGL or the model is unavailable (or the page is opened from `file://`) the page falls back to the photos.
+`assets/models/ship.glb` is loaded by `js/ship.js` (from `file://` it reads the embedded copy in `js/ship-model.js`, which `npm run model` regenerates). As the wheel turns, the camera flies to the part of the ship each service relates to, tilts the model between stops, and glows that part. If WebGL or the model is unavailable (or the page is opened from `file://`) the page falls back to the photos.
 
 Rebuild after editing:
 ```bash
